@@ -357,11 +357,12 @@ the intermediate features required for distillation.
 You can run monocular depth estimation on any RGB image (such as `images/test.jpg`) using `run_depth.py`, powered by Depth Anything V2:
 
 ```bash
-# Run on the default test image (images/test.jpg)
-python run_depth.py
+# Run with GPU using the virtual environment:
+.\.venv\Scripts\python.exe run_depth.py --image images/test.jpg --device cuda:0
 
-# Or specify a custom input image and output directory
-python run_depth.py --image images/test.jpg --output-dir images/
+# Or activate the venv first:
+.\.venv\Scripts\activate
+python run_depth.py --image images/test.jpg
 ```
 
 This generates:

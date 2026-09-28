@@ -28,7 +28,22 @@ def run_depth_estimation(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     if device is None:
-        device = "cuda:0" if torch.cuda.is_available() else "cpu"
+        if torch.cuda.is_available():
+            device = "cuda:0"
+            print(f"Using GPU: {torch.cuda.get_device_name(0)} ({device})")
+        else:
+            device = "cpu"
+            print("Notice: CUDA is not enabled in this Python environment. Running on CPU.")
+            print("Tip: Activate the virtual environment to use your GPU (NVIDIA RTX A1000):")
+            print(r"     .\.venv\Scripts\python.exe run_depth.py ...")
+    else:
+        if "cuda" in device and not torch.cuda.is_available():
+            raise RuntimeError(
+                f"Requested device '{device}', but CUDA is not available in this Python environment.\n"
+                r"Please run using the virtual environment: .\.venv\Scripts\python.exe run_depth.py"
+            )
+        print(f"Using device: {device}")
+
     print(f"Loading model '{model_name}' on device '{device}'...")
 
     pipe = pipeline("depth-estimation", model=model_name, device=device)
