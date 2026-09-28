@@ -352,6 +352,30 @@ Expected tensor shapes are:
 During training, `student(image, tof_tokens, return_aux=True)` also returns
 the intermediate features required for distillation.
 
+## Running depth estimation on images
+
+You can run monocular depth estimation on any RGB image (such as `images/test.jpg`) using `run_depth.py`, powered by Depth Anything V2:
+
+```bash
+# Run on the default test image (images/test.jpg)
+python run_depth.py
+
+# Or specify a custom input image and output directory
+python run_depth.py --image images/test.jpg --output-dir images/
+```
+
+This generates:
+- **`<name>_depth_colored.png`**: High-resolution colored depth map (Inferno colormap).
+- **`<name>_depth_comparison.png`**: Side-by-side comparison showing the RGB input and depth maps (Inferno and Plasma).
+- **`<name>_depth_gray.png`**: Normalized 8-bit grayscale depth map.
+- **`<name>_depth_16bit.png`**: 16-bit raw depth map for 3D reconstruction and downstream processing.
+
+Command-line arguments:
+- `--image`: Path to the input image (default: `images/test.jpg`).
+- `--output-dir`: Output directory (default: same directory as input image).
+- `--model`: Hugging Face model checkpoint (default: `depth-anything/Depth-Anything-V2-Small-hf`).
+- `--device`: Target device (`cuda:0`, `cpu`, etc.; auto-detects CUDA if available).
+
 ## Tests
 
 Run the test suite from the repository root:
@@ -360,3 +384,4 @@ Run the test suite from the repository root:
 python -m pip install pytest
 python -m pytest -q
 ```
+
